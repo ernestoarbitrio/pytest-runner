@@ -12,7 +12,7 @@
   "engines": {
     "vscode": "^1.63.0"
   },
-  "icon": "https://raw.githubusercontent.com/ernestoarbitrio/pytest-runner/main/images/pytest-runner-logo-small.png",
+  "icon": "images/pytest-runner-logo-small.png",
   "categories": [
     "Other", "Testing"
   ],
