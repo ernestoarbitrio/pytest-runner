@@ -1,70 +1,80 @@
-# pytest-runner README
+# pytest-runner
 
-This is the README for your extension "pytest-runner". After writing up a brief description, we recommend including the following sections.
+This `vscode` extension allows you to run test (*in a very quick way*) in your `python` codebase using [`pytest`](https://docs.pytest.org).
+It can be configured to run test using a `local` and a `docker` based interpreter (see [Extension Settings](#extestion-settings)).
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- Run tests using `local or venv` pytest command
+- Run tests using pytest through a `docker container`
+- Automatic inspection of pytest configurantion in `config.cfg` or `pyptoject.toml`
 
-For example if there is an image subfolder under your extension project workspace:
+The test execution cehcks the configuration file of you project, for example for a toml file like this:
+```toml
+[tool.pytest.ini_options]
+python_classes = ["Test", "Describe"]
+python_functions = ["test_", "it_", "and_", "but_", "they_"]
+python_files = ["test_*.py",]
+testpaths = ["tests",]
+```
+If your test function doesn't start with any of the names abobe pytest-runner won't start and it shows you an
+error message.
 
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+![error](images/err.png)
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+The only requirement is `pytest`. NOTE: this extension, so far, has been tested with `MacOsx` and `Linux`.
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
 This extension contributes the following settings:
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+* `pytest_runner.pytest_exec`: the local `pytest` command exectuable. If not set it fallbacks to your active virtual environment set within the `vscode` python extesions or, if not set, to `pytest` in `usr/bin`
+* `pytest_runner.pytest_exec_docker`: the docker command to run `pytest` in your container (e.g. `docker-compose run --rm testrun-container pytest`)
+
+These options can be set in each `settings.json` within `.vscode` in the project root directory or in the `settings.json` of `VSCode` (**not recommended**).
+
+## Usage
+
+There are 2 commands available:
+- `Run Test`
+- `Run Test Docker`
+You can run them using the `VSCode` command palette (`⇧⌘P` or `ctr⇧P`).
+![cmd-palette](images/cmd-palette-example.gif)
+
+To run a test you have 2 options:
+ 1. Position your cursor on the line where the test `function` of `class` is defined and run the desired command.
+ 2. Select the test name of portion of it and run the desired command.
+ ![run-test-demo](images/run-test-demo.gif)
+
+ ### Keybindings and shortcuts
+
+ To increase the speed I would suggest a new entry in the keybindigs in order to map the 2 commands to a keyboard
+ key combination:
+  1. Open `keybinding.json` -> command palette (`⇧⌘P` or `ctr⇧P`) `Open Keyboard Shortcut`
+  2. Add your key combination:
+  ```json
+      {
+        "key": "ctrl+alt+1",
+        "command": "pytest-runner.run-test"
+      }
+  ```
+  Now, as well as the command palette, the test can be exectues using your custom shortcut. In the example above
+  the test will run with the `ctrl+alt+1` key combination.
+
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+**Only** when `pytest_runner.pytest_exec` is set to `pytest` without specifying the complete path of the exectuable, the first time the `Run Test` will fail due to async problem between terminal `venv` activation and the send command time.
+
+The second run should work properly.
+
+<br><br>
 
 ## Release Notes
+---
 
-Users appreciate release notes as you update your extension.
+### 0.0.1
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+First `pytest-runner` release

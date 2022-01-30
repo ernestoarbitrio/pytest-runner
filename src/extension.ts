@@ -1,12 +1,8 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as toml from 'toml';
 import * as fs from 'fs';
-
-const testFunctions: Array<string> = ['test_'];
-const testClasses: Array<string> = ['Test'];
-const defaultPyTestCMD: string = 'pytest';
+import { Utility } from './utility';
+import { Constants } from './constants';
 
 // Static class that creates and holds a reference to a terminal and can run commands in it.
 class Term {
@@ -46,11 +42,11 @@ export function getPytestCfg(projectDir: string) {
         const pyClasses =
             classMatch !== null
                 ? classMatch[0].replace('=', '').trim().split(' ')
-                : testClasses;
+                : Constants.testClasses;
         const pyFunctions =
             functionMatch !== null
                 ? functionMatch[0].replace('=', '').trim().split(' ')
-                : testFunctions;
+                : Constants.testFunctions;
         return [pyFunctions, pyClasses];
     }
 
@@ -62,20 +58,20 @@ export function getPytestCfg(projectDir: string) {
             return _setupCfgConf(setupCfg);
         }
         const pyFunctions: Array<string> =
-            config.tool.pytest.ini_options.python_functions || testFunctions;
+            config.tool.pytest.ini_options.python_functions || Constants.testFunctions;
         const pyClasses: Array<string> =
-            config.tool.pytest.ini_options.python_classes || testClasses;
+            config.tool.pytest.ini_options.python_classes || Constants.testClasses;
         return [pyFunctions, pyClasses];
     } else if (fs.existsSync(setupCfg)) {
         return _setupCfgConf(setupCfg);
     } else {
-        return [testFunctions, testClasses];
+        return [Constants.testFunctions, Constants.testClasses];
     }
 }
 
 export function runCommand(cmd: string) {
     if (!cmd) {
-        vscode.window.showWarningMessage(`pytest-runner: command not found.`);
+        vscode.window.showErrorMessage(`pytest-runner: command not found.`);
         return;
     }
     Term.run(cmd);
@@ -121,7 +117,7 @@ export function getTestAuthorityName(
     return;
 }
 
-function runTest(pytestCfgKey: string) {
+async function runTest(pytestCfgKey: string) {
     const editor = vscode.window.activeTextEditor;
     if (!editor) {
         vscode.window.showWarningMessage('No active editor');
@@ -132,7 +128,15 @@ function runTest(pytestCfgKey: string) {
     const filepath = getRelativePath(res.path, projectFolder);
 
     const conf = vscode.workspace.getConfiguration();
-    const pytestExec = conf.get(pytestCfgKey) || defaultPyTestCMD;
+    const pytestExec =
+        conf.get(pytestCfgKey) || (await Utility.getDefaultPytestCmd(editor.document));
+    if (!pytestExec) {
+        vscode.window.showErrorMessage(
+            'pytest command not found! Check your virtualenv in the VSCode python ' +
+                'extension or add a custom pytest command in the extension settings.'
+        );
+        return;
+    }
     const pytestConf = getPytestCfg(projectFolder);
 
     const selection = getTestAuthorityName(
@@ -141,8 +145,18 @@ function runTest(pytestCfgKey: string) {
         editor.document
     );
     if (!selection) {
-        vscode.window.showWarningMessage('No valid test selection');
-        return;
+        if (editor.selection.isEmpty) {
+            vscode.window.showErrorMessage(
+                'No valid test function of class has been found on the current line'
+            );
+            return;
+        } else {
+            const editorSelection = editor.document.getText(editor.selection);
+            vscode.window.showErrorMessage(
+                `No valid test selection: ${editorSelection}`
+            );
+            return;
+        }
     }
     let command = `${pytestExec} -v ${filepath} -k ${selection}`;
     runCommand(command);
