@@ -3,6 +3,7 @@
   "displayName": "Pytest Runner for Visual Studio Code",
   "description": "Run test (locally ,venv and in docker container) in your 🐍 `python` codebase using pytest.",
   "version": "0.0.1",
+  "publisher": "pamaron",
   "keywords": ["python", "pytest", "testing", "docker"],
   "license": "MIT",
   "author": {
