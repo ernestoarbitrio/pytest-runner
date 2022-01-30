@@ -1,4 +1,4 @@
-# pytest-runner
+![logo](https://raw.githubusercontent.com/ernestoarbitrio/pytest-runner/main/images/pytest-runner-logo-small.png)
 
 This `vscode` extension allows you to run test (*in a very quick way*) in your 🐍 `python` codebase using [`pytest`](https://docs.pytest.org).
 It can be configured to run test using a `local` and a `docker` 🐳  based interpreter (see [Extension Settings](#extestion-settings)).
