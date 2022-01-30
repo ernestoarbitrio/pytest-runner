@@ -1,7 +1,12 @@
 ![logo](https://raw.githubusercontent.com/ernestoarbitrio/pytest-runner/main/images/pytest-runner-logo-small.png)
 
+![ci](https://github.com/ernestoarbitrio/pytest-runner/workflows/CI/badge.svg?branch=main)
+
 This `vscode` extension allows you to run test (*in a very quick way*) in your 🐍 `python` codebase using [`pytest`](https://docs.pytest.org).
 It can be configured to run test using a `local` and a `docker` 🐳  based interpreter (see [Extension Settings](#extestion-settings)).
+
+**NOTE: this is an early stage project 🐣. Please open an issue or, even better, a PR if you find it interesting and you
+wanna improve `pytest-runner`.**
 
 ## Features 😎
 
@@ -70,7 +75,13 @@ To run a test you have 2 options:
 
 The second run should work properly.
 
-<br>
+---
+
+### Do you like pytest-runner?
+
+<a href="https://www.buymeacoffee.com/ernestoarb5" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+
+---
 
 ## Release Notes 📋
 

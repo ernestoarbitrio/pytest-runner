@@ -1,14 +1,29 @@
 {
   "name": "pytest-runner",
-  "displayName": "Pytest Runner",
-  "description": "",
+  "displayName": "Pytest Runner for Visual Studio Code",
+  "description": "Run test (locally ,venv and in docker container) in your 🐍 `python` codebase using pytest.",
   "version": "0.0.1",
+  "keywords": ["python", "pytest", "testing", "docker"],
+  "license": "MIT",
+  "author": {
+    "name": "Ernesto Arbitrio"
+  },
   "engines": {
     "vscode": "^1.63.0"
   },
+  "icon": "https://raw.githubusercontent.com/ernestoarbitrio/pytest-runner/main/images/pytest-runner-logo-small.png",
   "categories": [
-    "Other"
+    "Other", "Testing"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ernestoarbitrio/pytest-runner"
+  },
+  "homepage": "https://github.com/ernestoarbitrio/pytest-runner/blob/main/README.md",
+  "bugs": {
+    "url": "https://github.com/ernestoarbitrio/pytest-runner/issues",
+    "email": "ernesto.arbitrio@gmail.com"
+  },
   "activationEvents": [
     "onCommand:pytest-runner.run-test"
   ],
