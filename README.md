@@ -87,4 +87,8 @@ The second run should work properly.
 
 ### 0.0.1
 
-- First `pytest-runner` release
+- First `pytest-runner` release.
+
+### 0.0.2
+
+- Fix typo in error messages.

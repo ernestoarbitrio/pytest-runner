@@ -147,7 +147,7 @@ async function runTest(pytestCfgKey: string) {
     if (!selection) {
         if (editor.selection.isEmpty) {
             vscode.window.showErrorMessage(
-                'No valid test function of class has been found on the current line'
+                'No valid test function or class has been found on the current line.'
             );
             return;
         } else {
