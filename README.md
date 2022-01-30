@@ -3,7 +3,7 @@
 ![ci](https://github.com/ernestoarbitrio/pytest-runner/workflows/CI/badge.svg?branch=main)
 
 This `vscode` extension allows you to run test (*in a very quick way*) in your 🐍 `python` codebase using [`pytest`](https://docs.pytest.org).
-It can be configured to run test using a `local` and a `docker` 🐳  based interpreter (see [Extension Settings](#extestion-settings)).
+It can be configured to run test using a `local` and a `docker` 🐳  based interpreter (see [Extension Settings](#extension-settings)).
 
 **NOTE: this is an early stage project 🐣. Please open an issue or, even better, a PR if you find it interesting and you
 wanna improve `pytest-runner`.**
