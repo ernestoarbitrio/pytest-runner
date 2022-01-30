@@ -1,9 +1,9 @@
 # pytest-runner
 
-This `vscode` extension allows you to run test (*in a very quick way*) in your `python` codebase using [`pytest`](https://docs.pytest.org).
-It can be configured to run test using a `local` and a `docker` based interpreter (see [Extension Settings](#extestion-settings)).
+This `vscode` extension allows you to run test (*in a very quick way*) in your 🐍 `python` codebase using [`pytest`](https://docs.pytest.org).
+It can be configured to run test using a `local` and a `docker` 🐳  based interpreter (see [Extension Settings](#extestion-settings)).
 
-## Features
+## Features 😎
 
 - Run tests using `local or venv` pytest command
 - Run tests using pytest through a `docker container`
@@ -18,15 +18,15 @@ python_files = ["test_*.py",]
 testpaths = ["tests",]
 ```
 If your test function doesn't start with any of the names abobe pytest-runner won't start and it shows you an
-error message.
+error ❌ message.
 
 ![error](https://raw.githubusercontent.com/ernestoarbitrio/pytest-runner/main/images/err.png)
 
-## Requirements
+## Requirements 🕹
 
 The only requirement is `pytest`. NOTE: this extension, so far, has been tested with `MacOsx` and `Linux`.
 
-## Extension Settings
+## Extension Settings ⚙️
 
 This extension contributes the following settings:
 
@@ -35,7 +35,7 @@ This extension contributes the following settings:
 
 These options can be set in each `settings.json` within `.vscode` in the project root directory or in the `settings.json` of `VSCode` (**not recommended**).
 
-## Usage
+## Usage 📚
 
 There are 2 commands available:
 - `Run Test`
@@ -48,7 +48,7 @@ To run a test you have 2 options:
  2. Select the test name of portion of it and run the desired command.
  ![run-test-demo](https://raw.githubusercontent.com/ernestoarbitrio/pytest-runner/main/images/run-test-demo.gif)
 
- ### Keybindings and shortcuts
+ ### Keybindings and shortcuts ⌨️
 
  To increase the speed I would suggest a new entry in the keybindigs in order to map the 2 commands to a keyboard
  key combination:
@@ -64,7 +64,7 @@ To run a test you have 2 options:
   the test will run with the `ctrl+alt+1` key combination.
 
 
-## Known Issues
+## Known Issues 🧐
 
 **Only** when `pytest_runner.pytest_exec` is set to `pytest` without specifying the complete path of the exectuable, the first time the `Run Test` will fail due to async problem between terminal `venv` activation and the send command time.
 
@@ -72,7 +72,7 @@ The second run should work properly.
 
 <br>
 
-## Release Notes
+## Release Notes 📋
 
 ### 0.0.1
 
