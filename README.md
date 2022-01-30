@@ -1,6 +1,6 @@
 ![logo](https://raw.githubusercontent.com/ernestoarbitrio/pytest-runner/main/images/pytest-runner-logo-small.png)
 
-![ci](https://github.com/ernestoarbitrio/pytest-runner/workflows/CI/badge.svg?branch=main)
+![ci](https://github.com/ernestoarbitrio/pytest-runner/workflows/CI/badge.svg?branch=main) ![vs](https://vsmarketplacebadge.apphb.com/version-short/pamaron.pytest-runner.svg) ![vs-d](https://vsmarketplacebadge.apphb.com/installs/pamaron.pytest-runner.svg) ![dow](https://vsmarketplacebadge.apphb.com/downloads/pamaron.pytest-runner.svg) ![rating](https://vsmarketplacebadge.apphb.com/rating-star/pamaron.pytest-runner.svg)
 
 This `vscode` extension allows you to run test (*in a very quick way*) in your 🐍 `python` codebase using [`pytest`](https://docs.pytest.org).
 It can be configured to run test using a `local` and a `docker` 🐳  based interpreter (see Extension Settings).
