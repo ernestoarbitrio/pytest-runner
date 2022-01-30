@@ -12,7 +12,7 @@ wanna improve `pytest-runner`.**
 
 - Run tests using `local or venv` pytest command
 - Run tests using pytest through a `docker container`
-- Automatic inspection of pytest configurantion in `config.cfg` or `pyptoject.toml`
+- Automatic inspection of pytest configurantion in `setup.cfg` or `pyptoject.toml`
 
 The test execution checks the configuration file of your project, for example for a `toml` file like this:
 ```toml
