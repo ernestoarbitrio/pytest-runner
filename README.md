@@ -20,7 +20,7 @@ testpaths = ["tests",]
 If your test function doesn't start with any of the names abobe pytest-runner won't start and it shows you an
 error message.
 
-![error](images/err.png)
+![error](https://raw.githubusercontent.com/ernestoarbitrio/pytest-runner/main/images/err.png)
 
 ## Requirements
 
@@ -41,12 +41,12 @@ There are 2 commands available:
 - `Run Test`
 - `Run Test Docker`
 You can run them using the `VSCode` command palette (`⇧⌘P` or `ctr⇧P`).
-![cmd-palette](images/cmd-palette-example.gif)
+![cmd-palette](https://raw.githubusercontent.com/ernestoarbitrio/pytest-runner/main/images/cmd-palette-example.gif)
 
 To run a test you have 2 options:
  1. Position your cursor on the line where the test `function` of `class` is defined and run the desired command.
  2. Select the test name of portion of it and run the desired command.
- ![run-test-demo](images/run-test-demo.gif)
+ ![run-test-demo](https://raw.githubusercontent.com/ernestoarbitrio/pytest-runner/main/images/run-test-demo.gif)
 
  ### Keybindings and shortcuts
 
@@ -70,10 +70,9 @@ To run a test you have 2 options:
 
 The second run should work properly.
 
-<br><br>
+<br>
 
 ## Release Notes
----
 
 ### 0.0.1
 
