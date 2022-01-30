@@ -8,6 +8,16 @@ It can be configured to run test using a `local` and a `docker` 🐳  based inte
 **NOTE: this is an early stage project 🐣. Please open an issue or, even better, a PR if you find it interesting and you
 wanna improve `pytest-runner`.**
 
+## Motivation
+In my current job the test ecosystem lives in a complex architecture of docker containers. The 95% of tests need to be
+ran through the remote python interpreter within the docker container. Moreover the articulated tree of the source code
+required every time a long node_ids e.g. `test_mod.py::test_func` notation. 
+Given that I decided to start my own extension in order to run the test using any pytest exectutable, local or docker based,
+directly from the document your working on. I was inspired by https://vimawesome.com/plugin/pytest-vim and then I decided
+to write this plugin to facilitate and speed up the test invocation on any python codebase I work on 😊.
+
+Look at the usage section for more details.
+
 ## Features 😎
 
 - Run tests using `local or venv` pytest command
