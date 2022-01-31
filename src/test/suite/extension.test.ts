@@ -82,30 +82,67 @@ suite('Extension Test Suite', () => {
     });
 
     [
-        { cfg: [['test_'], ['Test']], line: 0, expected: 'TestExample' },
-        { cfg: [['test_'], ['Describe']], line: 7, expected: 'DescribeExample' },
-        { cfg: [['test_'], ['Test']], line: 7, expected: undefined },
+        {
+            checkCfg: true,
+            cfg: [['test_'], ['Test']],
+            line: 0,
+            expected: 'TestExample',
+        },
+        {
+            checkCfg: true,
+            cfg: [['test_'], ['Describe']],
+            line: 7,
+            expected: 'DescribeExample',
+        },
+        {
+            checkCfg: false,
+            cfg: [['test_'], ['Test']],
+            line: 7,
+            expected: 'DescribeExample',
+        },
+        { checkCfg: true, cfg: [['test_'], ['Test']], line: 7, expected: undefined },
     ].forEach((data) => {
-        test('authority name is the classe name on the active line', async () => {
+        test('authority name is the class name on the active line', async () => {
             const uri = vscode.Uri.file(
                 path.join(__dirname + fixturesLocation + 'test_example.py')
             );
             const document = await vscode.workspace.openTextDocument(uri);
             const selection = new vscode.Selection(data.line, 0, data.line, 0);
 
-            const authName = Ext.getTestAuthorityName(data.cfg, selection, document);
+            const authName = Ext.getTestAuthorityName(
+                data.checkCfg,
+                data.cfg,
+                selection,
+                document
+            );
 
             assert.strictEqual(authName, data.expected);
         });
     });
 
     [
-        { cfg: [['test_'], ['Test']], line: 1, expected: 'test_me' },
-        { cfg: [['test_', 'it_'], ['Describe']], line: 8, expected: 'it_has_some' },
-        { cfg: [['test_', 'but_'], ['Describe']], line: 4, expected: 'but_me' },
-        { cfg: [['test_'], ['Test']], line: 7, expected: undefined },
-        { cfg: [['test_'], ['Test']], line: 2, expected: undefined },
-        { cfg: [['it_'], ['Test']], line: 1, expected: undefined },
+        { checkCfg: true, cfg: [['test_'], ['Test']], line: 1, expected: 'test_me' },
+        {
+            checkCfg: true,
+            cfg: [['test_', 'it_'], ['Describe']],
+            line: 8,
+            expected: 'it_has_some',
+        },
+        {
+            checkCfg: false,
+            cfg: [['test_'], ['Describe']],
+            line: 8,
+            expected: 'it_has_some',
+        },
+        {
+            checkCfg: true,
+            cfg: [['test_', 'but_'], ['Describe']],
+            line: 4,
+            expected: 'but_me',
+        },
+        { checkCfg: true, cfg: [['test_'], ['Test']], line: 7, expected: undefined },
+        { checkCfg: true, cfg: [['test_'], ['Test']], line: 2, expected: undefined },
+        { checkCfg: true, cfg: [['it_'], ['Test']], line: 1, expected: undefined },
     ].forEach((data) => {
         test('authority name is the function name on the active line', async () => {
             const uri = vscode.Uri.file(
@@ -114,7 +151,12 @@ suite('Extension Test Suite', () => {
             const document = await vscode.workspace.openTextDocument(uri);
             const selection = new vscode.Selection(data.line, 0, data.line, 0);
 
-            const authName = Ext.getTestAuthorityName(data.cfg, selection, document);
+            const authName = Ext.getTestAuthorityName(
+                data.checkCfg,
+                data.cfg,
+                selection,
+                document
+            );
 
             assert.strictEqual(authName, data.expected);
         });
@@ -122,26 +164,31 @@ suite('Extension Test Suite', () => {
 
     [
         {
+            checkCfg: true,
             cfg: [['test_'], ['Test']],
             selection: { line: 1, anchorChar: 8, activeChar: 15 },
             expected: 'test_me',
         },
         {
+            checkCfg: true,
             cfg: [['test_'], ['Test']],
             selection: { line: 0, anchorChar: 6, activeChar: 17 },
             expected: 'TestExample',
         },
         {
+            checkCfg: true,
             cfg: [['test_'], ['Test']],
             selection: { line: 0, anchorChar: 6, activeChar: 14 },
             expected: 'TestExam',
         },
         {
+            checkCfg: true,
             cfg: [['test_'], ['Describe']],
             selection: { line: 0, anchorChar: 6, activeChar: 17 },
             expected: undefined,
         },
         {
+            checkCfg: true,
             cfg: [['test_'], ['Test']],
             selection: { line: 2, anchorChar: 6, activeChar: 14 },
             expected: undefined,
@@ -159,7 +206,12 @@ suite('Extension Test Suite', () => {
                 data.selection.activeChar
             );
 
-            const authName = Ext.getTestAuthorityName(data.cfg, selection, document);
+            const authName = Ext.getTestAuthorityName(
+                data.checkCfg,
+                data.cfg,
+                selection,
+                document
+            );
 
             assert.strictEqual(authName, data.expected);
         });
