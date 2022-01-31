@@ -54,7 +54,7 @@ export function getPytestCfg(projectDir: string) {
     const setupCfg = `${projectDir}/setup.cfg`;
     if (fs.existsSync(pyprojectToml)) {
         const config = toml.parse(fs.readFileSync(pyprojectToml, 'utf-8'));
-        if (!config.tool) {
+        if (!config.tool || !config.tool.pytest) {
             return _setupCfgConf(setupCfg);
         }
         const pyFunctions: Array<string> =
@@ -82,6 +82,7 @@ export function getRelativePath(rootpath: string, wsFolder: string) {
 }
 
 export function getTestAuthorityName(
+    checkConfig: boolean,
     pytestCfg: string[][],
     sel: vscode.Selection,
     document: vscode.TextDocument
@@ -90,10 +91,14 @@ export function getTestAuthorityName(
     // first authority is the seleceted text
     if (!sel!.isEmpty) {
         const selection = document.getText(sel);
-        return functionsNames.some((w) => selection.startsWith(w)) ||
-            classesNames.some((w) => selection.startsWith(w))
-            ? selection
-            : undefined;
+        if (checkConfig === true) {
+            return functionsNames.some((w) => selection.startsWith(w)) ||
+                classesNames.some((w) => selection.startsWith(w))
+                ? selection
+                : undefined;
+        } else {
+            return selection;
+        }
     }
     const lineNumber = sel.active.line;
     const line: string | undefined = document.lineAt(lineNumber).text || undefined;
@@ -104,15 +109,23 @@ export function getTestAuthorityName(
     const functionMatch: RegExpMatchArray | null = line.match(/def(.*?)\(/);
     if (functionMatch !== null) {
         const function_ = functionMatch[1].trim();
-        return functionsNames.some((w) => function_.startsWith(w))
-            ? function_
-            : undefined;
+        if (checkConfig === true) {
+            return functionsNames.some((w) => function_.startsWith(w))
+                ? function_
+                : undefined;
+        } else {
+            return function_;
+        }
     }
     // third authority is the class name
     const classMatch: RegExpMatchArray | null = line.match(/class(.*?)[\(|\:]/);
     if (classMatch !== null) {
         const class_ = classMatch[1].trim();
-        return classesNames.some((w) => class_.startsWith(w)) ? class_ : undefined;
+        if (checkConfig === true) {
+            return classesNames.some((w) => class_.startsWith(w)) ? class_ : undefined;
+        } else {
+            return class_;
+        }
     }
     return;
 }
@@ -128,6 +141,7 @@ async function runTest(pytestCfgKey: string) {
     const filepath = getRelativePath(res.path, projectFolder);
 
     const conf = vscode.workspace.getConfiguration();
+    const checkConfig: boolean = conf.get('pytest_runner.check_config') || false;
     const pytestExec =
         conf.get(pytestCfgKey) || (await Utility.getDefaultPytestCmd(editor.document));
     if (!pytestExec) {
@@ -140,6 +154,7 @@ async function runTest(pytestCfgKey: string) {
     const pytestConf = getPytestCfg(projectFolder);
 
     const selection = getTestAuthorityName(
+        checkConfig,
         pytestConf,
         editor.selection,
         editor.document

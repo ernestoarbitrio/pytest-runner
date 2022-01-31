@@ -22,9 +22,9 @@ Look at the usage section for more details.
 
 - Run tests using `local or venv` pytest command
 - Run tests using pytest through a `docker container`
-- Automatic inspection of pytest configurantion in `setup.cfg` or `pyproject.toml`
+- Optional inspection of pytest configurantion in `setup.cfg` or `pyproject.toml`
 
-The test execution checks the configuration file of your project, for example for a `toml` file like this:
+If `pytest_runner.check_config` is `true`, before the test execution, `pytest-runner` checks the configuration file of your project, for example for a `toml` file like this:
 ```toml
 [tool.pytest.ini_options]
 python_classes = ["Test", "Describe"]
@@ -32,6 +32,17 @@ python_functions = ["test_", "it_", "and_", "but_", "they_"]
 python_files = ["test_*.py",]
 testpaths = ["tests",]
 ```
+
+or a `setup.cfg`:
+```toml
+[tool:pytest]
+python_classes = Test Describe
+python_files = test_*.py
+python_functions = test_ it_ they_ but_ and_it_
+testpaths =
+    tests
+```
+
 If your test function doesn't start with any of the names above, pytest-runner won't start and it shows you an
 error ❌ message.
 
@@ -47,6 +58,7 @@ This extension contributes the following settings:
 
 * `pytest_runner.pytest_exec`: the local `pytest` command exectuable. If not set it fallbacks to your active virtual environment set within the `vscode` python extesions or, if not set, to `pytest` in `usr/bin`
 * `pytest_runner.pytest_exec_docker`: the docker command to run `pytest` in your container (e.g. `docker-compose run --rm testrun-container pytest`)
+* `pytest_runner.check_config`: default `false`. Check pytest conf section within `pyproject.toml` or `setup.cfg` if they're present in the project root.
 
 These options can be set in each `settings.json` within `.vscode` in the project root directory or in the `settings.json` of `VSCode` (**not recommended**).
 
@@ -95,10 +107,15 @@ The second run should work properly.
 
 ## Release Notes 📋
 
-### 0.0.1
+### 0.0.3
 
-- First `pytest-runner` release.
+- Add check toml or cfg configuration configurable and optional.
 
 ### 0.0.2
 
 - Fix typo in error messages.
+
+### 0.0.1
+
+- First `pytest-runner` release.
+
