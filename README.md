@@ -34,7 +34,7 @@ testpaths = ["tests",]
 ```
 
 or a `setup.cfg`:
-```toml
+```
 [tool:pytest]
 python_classes = Test Describe
 python_files = test_*.py
