@@ -5,8 +5,8 @@
 This `vscode` extension allows you to run test (*in a very quick way*) in your 🐍 `python` codebase using [`pytest`](https://docs.pytest.org).
 It can be configured to run test using a `local` and a `docker` 🐳  based interpreter (see Extension Settings).
 
-**NOTE: this is an early stage project 🐣. Please open an issue or, even better, a PR if you find it interesting and you
-wanna improve `pytest-runner`.**
+> NOTE: this is an early stage project 🐣. Please open an issue or, even better, a PR if you find it interesting and you
+wanna improve `pytest-runner`.
 
 ## Motivation
 In my current job the test ecosystem lives in a complex architecture of docker containers. The 95% of tests need to be
@@ -20,8 +20,8 @@ Look at the usage section for more details.
 
 ## Features 😎
 
-- Run tests using `local or venv` pytest command
-- Run tests using pytest through a `docker container`
+- Run single tests or test modules using `local or venv` pytest command
+- Run single tests or test modules using pytest through a `docker container`
 - Optional inspection of pytest configurantion in `setup.cfg` or `pyproject.toml`
 
 If `pytest_runner.check_config` is `true`, before the test execution, `pytest-runner` checks the configuration file of your project, for example for a `toml` file like this:
@@ -64,20 +64,35 @@ These options can be set in each `settings.json` within `.vscode` in the project
 
 ## Usage 📚
 
-There are 2 commands available:
+There are 4 commands available:
 - `Run Test`
 - `Run Test Docker`
+- `Run Test Module`
+- `Run Test Module Docker`
+
 You can run them using the `VSCode` command palette (`⇧⌘P` or `ctr⇧P`).
+
 ![cmd-palette](https://raw.githubusercontent.com/ernestoarbitrio/pytest-runner/main/images/cmd-palette-example.gif)
 
-To run a test you have 2 options:
+To **run a test** you have 2 options:
  1. Position your cursor on the line where the test `function` or a `class` is defined and run the desired command.
  2. Select the test name or portion of it and run the desired command.
+
  ![run-test-demo](https://raw.githubusercontent.com/ernestoarbitrio/pytest-runner/main/images/run-test-demo.gif)
+
+
+>💡 This way of usage (through the command palette) could be not really productive. I would suggest to create a keyboard shortuct for every command you are going to use.
 
  ### Keybindings and shortcuts ⌨️
 
- To increase the speed I would suggest a new entry in the keybindigs in order to map the 2 commands to a keyboard
+The 4 commands in the section above are actually an alias for these:
+
+- `pytest-runner.run-test`
+- `pytest-runner.run-test-docker`
+- `pytest-runner.run-module-test`
+- `pytest-runner.run-module-test-docker`
+
+To increase the speed I would suggest new entries in the keybindigs in order to map the 2 commands to a keyboard
  key combination:
   1. Open `keybinding.json` -> command palette (`⇧⌘P` or `ctr⇧P`) `Open Keyboard Shortcut`
   2. Add your key combination:
@@ -85,10 +100,15 @@ To run a test you have 2 options:
       {
         "key": "ctrl+alt+1",
         "command": "pytest-runner.run-test"
+      },
+      ...
+      {
+        "key": "ctrl+alt+2",
+        "command": "pytest-runner.run-module-test"
       }
   ```
 Now, as well as the command palette, the tests can be exectued using your custom shortcut. In the example above
-the test will run with the `ctrl+alt+1` key combination.
+a single test will run with the `ctrl+alt+1` key combination and the whole module can be tested using the `ctrl+alt+2`.
 
 
 ## Known Issues 🧐
@@ -106,6 +126,10 @@ The second run should work properly.
 ---
 
 ## Release Notes 📋
+
+### 0.0.4
+
+- 2 new commands for running test modules `run-module-test` and `run-module-test-docker`
 
 ### 0.0.3
 
