@@ -2,7 +2,7 @@
   "name": "pytest-runner",
   "displayName": "Pytest Runner for Visual Studio Code",
   "description": "Run test (locally ,venv and in docker container) in your 🐍 python codebase using pytest.",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "publisher": "pamaron",
   "keywords": ["python", "pytest", "testing", "docker"],
   "license": "MIT",
@@ -26,7 +26,11 @@
     "email": "ernesto.arbitrio@gmail.com"
   },
   "activationEvents": [
-    "onCommand:pytest-runner.run-test"
+    "onCommand:pytest-runner.run-test",
+    "onCommand:pytest-runner.run-test-docker",
+    "onCommand:pytest-runner.run-module-test",
+    "onCommand:pytest-runner.run-module-test-docker",
+    "onLanguage:python"
   ],
   "main": "./out/extension.js",
   "contributes": {

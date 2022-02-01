@@ -70,16 +70,23 @@ There are 4 commands available:
 - `Run Test Module`
 - `Run Test Module Docker`
 
-You can run them using the `VSCode` command palette (`⇧⌘P` or `ctr⇧P`).
+You can run them using the `VSCode` command palette (`⇧⌘P` or `ctr⇧P`)
 
 ![cmd-palette](https://raw.githubusercontent.com/ernestoarbitrio/pytest-runner/main/images/cmd-palette-example.gif)
 
-To **run a test** you have 2 options:
+or through the 2 custom buttons on the status bar.
+
+![cmd-palette](https://raw.githubusercontent.com/ernestoarbitrio/pytest-runner/main/images/custom-buttons.png)
+
+To **run a single test** you have 2 options:
  1. Position your cursor on the line where the test `function` or a `class` is defined and run the desired command.
  2. Select the test name or portion of it and run the desired command.
 
+ > According to the command the test will be executed in the local environment `Run Test` or in the docker container `Run Test Docker`
+
  ![run-test-demo](https://raw.githubusercontent.com/ernestoarbitrio/pytest-runner/main/images/run-test-demo.gif)
 
+If you wanna run all the tests in your current python module you can just use `Run Test Module` or `Run Test Module Docker` independently of the cursor location.
 
 >💡 This way of usage (through the command palette) could be not really productive. I would suggest to create a keyboard shortuct for every command you are going to use.
 
@@ -127,9 +134,13 @@ The second run should work properly.
 
 ## Release Notes 📋
 
+### 0.0.5
+
+- Custom buttons on the status bar.
+
 ### 0.0.4
 
-- 2 new commands for running test modules `run-module-test` and `run-module-test-docker`
+- 2 new commands for running test modules `run-module-test` and `run-module-test-docker`.
 
 ### 0.0.3
 

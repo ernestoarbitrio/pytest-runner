@@ -203,6 +203,9 @@ async function runModuleTest(pytestCfgKey: string) {
     runCommand(command);
 }
 
+let runTestItem: vscode.StatusBarItem;
+let runDockerTestItem: vscode.StatusBarItem;
+
 export function activate(context: vscode.ExtensionContext) {
     // single test runner disposables
     let testLocalDisposable = vscode.commands.registerCommand(
@@ -230,10 +233,54 @@ export function activate(context: vscode.ExtensionContext) {
             runModuleTest('pytest_exec_docker');
         }
     );
+
+    // status bar items
+    runTestItem = vscode.window.createStatusBarItem(
+        vscode.StatusBarAlignment.Right,
+        650
+    );
+    runTestItem.command = 'pytest-runner.run-test';
+    runTestItem.tooltip = 'Pytest Runner (local)';
+    runTestItem.text = `💻  $(testing-run-icon)`;
+
+    runDockerTestItem = vscode.window.createStatusBarItem(
+        vscode.StatusBarAlignment.Right,
+        649
+    );
+    runDockerTestItem.command = 'pytest-runner.run-test-docker';
+    runDockerTestItem.tooltip = 'Pytest Runner (docker)';
+    runDockerTestItem.text = `🐳  $(testing-run-icon)`;
+
+    context.subscriptions.push(runTestItem);
+    context.subscriptions.push(runDockerTestItem);
+
+    context.subscriptions.push(
+        vscode.window.onDidChangeActiveTextEditor(updateStatusBarItems)
+    );
+    updateStatusBarItems();
+
     context.subscriptions.push(testLocalDisposable);
     context.subscriptions.push(testDockerDisposable);
     context.subscriptions.push(testMoudleLocalDisposable);
     context.subscriptions.push(testModuleDockerDisposable);
+}
+
+function updateStatusBarItems(): void {
+    const currentFile = vscode.window.activeTextEditor!.document.uri.path;
+    const conf = vscode.workspace.getConfiguration();
+    const dockerConf = conf.get('pytest_runner.pytest_exec_docker');
+    if (!dockerConf) {
+        runDockerTestItem.hide();
+    }
+    if (!currentFile || currentFile.slice(-2) !== 'py') {
+        runTestItem.hide();
+        runDockerTestItem.hide();
+    } else {
+        if (dockerConf) {
+            runDockerTestItem.show();
+        }
+        runTestItem.show();
+    }
 }
 
 // this method is called when your extension is deactivated
