@@ -26,7 +26,11 @@
     "email": "ernesto.arbitrio@gmail.com"
   },
   "activationEvents": [
-    "onCommand:pytest-runner.run-test"
+    "onCommand:pytest-runner.run-test",
+    "onCommand:pytest-runner.run-test-docker",
+    "onCommand:pytest-runner.run-module-test",
+    "onCommand:pytest-runner.run-module-test-docker",
+    "onLanguage:python"
   ],
   "main": "./out/extension.js",
   "contributes": {
