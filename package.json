@@ -38,6 +38,14 @@
       {
         "command": "pytest-runner.run-test-docker",
         "title": "Run Test Docker"
+      },
+      {
+        "command": "pytest-runner.run-module-test",
+        "title": "Run Test Module"
+      },
+      {
+        "command": "pytest-runner.run-module-test-docker",
+        "title": "Run Test Module Docker"
       }
     ]
   },

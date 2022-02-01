@@ -130,7 +130,7 @@ export function getTestAuthorityName(
     return;
 }
 
-async function runTest(pytestCfgKey: string) {
+async function runSingleTest(pytestCfgKey: string) {
     const editor = vscode.window.activeTextEditor;
     if (!editor) {
         vscode.window.showWarningMessage('No active editor');
@@ -143,7 +143,8 @@ async function runTest(pytestCfgKey: string) {
     const conf = vscode.workspace.getConfiguration();
     const checkConfig: boolean = conf.get('pytest_runner.check_config') || false;
     const pytestExec =
-        conf.get(pytestCfgKey) || (await Utility.getDefaultPytestCmd(editor.document));
+        conf.get(`pytest_runner.${pytestCfgKey}`) ||
+        (await Utility.getDefaultPytestCmd(editor.document));
     if (!pytestExec) {
         vscode.window.showErrorMessage(
             'pytest command not found! Check your virtualenv in the VSCode python ' +
@@ -177,18 +178,62 @@ async function runTest(pytestCfgKey: string) {
     runCommand(command);
 }
 
+async function runModuleTest(pytestCfgKey: string) {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) {
+        vscode.window.showWarningMessage('No active editor');
+        return;
+    }
+    const res = editor!.document.uri;
+    const projectFolder = vscode.workspace.getWorkspaceFolder(res)!.uri.fsPath;
+    const filepath = getRelativePath(res.path, projectFolder);
+
+    const conf = vscode.workspace.getConfiguration();
+    const pytestExec =
+        conf.get(`pytest_runner.${pytestCfgKey}`) ||
+        (await Utility.getDefaultPytestCmd(editor.document));
+    if (!pytestExec) {
+        vscode.window.showErrorMessage(
+            'pytest command not found! Check your virtualenv in the VSCode python ' +
+                'extension or add a custom pytest command in the extension settings.'
+        );
+        return;
+    }
+    let command = `${pytestExec} ${filepath}`;
+    runCommand(command);
+}
+
 export function activate(context: vscode.ExtensionContext) {
-    let disposable = vscode.commands.registerCommand('pytest-runner.run-test', () => {
-        runTest('pytest_runner.pytest_exec');
-    });
-    let disposable2 = vscode.commands.registerCommand(
-        'pytest-runner.run-test-docker',
+    // single test runner disposables
+    let testLocalDisposable = vscode.commands.registerCommand(
+        'pytest-runner.run-test',
         () => {
-            runTest('pytest_runner.pytest_exec_docker');
+            runSingleTest('pytest_exec');
         }
     );
-    context.subscriptions.push(disposable);
-    context.subscriptions.push(disposable2);
+    let testDockerDisposable = vscode.commands.registerCommand(
+        'pytest-runner.run-test-docker',
+        () => {
+            runSingleTest('pytest_exec_docker');
+        }
+    );
+    // test module runner disposables
+    let testMoudleLocalDisposable = vscode.commands.registerCommand(
+        'pytest-runner.run-module-test',
+        () => {
+            runModuleTest('pytest_exec');
+        }
+    );
+    let testModuleDockerDisposable = vscode.commands.registerCommand(
+        'pytest-runner.run-module-test-docker',
+        () => {
+            runModuleTest('pytest_exec_docker');
+        }
+    );
+    context.subscriptions.push(testLocalDisposable);
+    context.subscriptions.push(testDockerDisposable);
+    context.subscriptions.push(testMoudleLocalDisposable);
+    context.subscriptions.push(testModuleDockerDisposable);
 }
 
 // this method is called when your extension is deactivated
