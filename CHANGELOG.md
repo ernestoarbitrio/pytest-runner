@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.5
+
+- Custom buttons on the status bar.
+
 ## 0.0.4
 
 - 2 new commands for running test modules `run-module-test` and `run-module-test-docker`
