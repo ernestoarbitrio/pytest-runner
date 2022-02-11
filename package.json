@@ -10,7 +10,7 @@
     "name": "Ernesto Arbitrio"
   },
   "engines": {
-    "vscode": "^1.63.0"
+    "vscode": "^1.64.0"
   },
   "icon": "images/pytest-runner-logo-small.png",
   "categories": [
