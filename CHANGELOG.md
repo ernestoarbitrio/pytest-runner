@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.6
+
+- Bug fix on terminal auto focus.
+- Autoclear terminal befor running a test.
+
 ## 0.0.5
 
 - Custom buttons on the status bar.

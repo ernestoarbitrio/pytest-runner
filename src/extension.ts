@@ -24,6 +24,9 @@ class Term {
     }
 
     static run(command: string) {
+        Term._term().show();
+        // clear text in current terminal
+        vscode.commands.executeCommand('workbench.action.terminal.clear');
         Term._term().sendText(command, true);
     }
 
