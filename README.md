@@ -59,6 +59,7 @@ This extension contributes the following settings:
 * `pytest_runner.pytest_exec`: the local `pytest` command exectuable. If not set it fallbacks to your active virtual environment set within the `vscode` python extesions or, if not set, to `pytest` in `usr/bin`
 * `pytest_runner.pytest_exec_docker`: the docker command to run `pytest` in your container (e.g. `docker-compose run --rm testrun-container pytest`)
 * `pytest_runner.check_config`: default `false`. Check pytest conf section within `pyproject.toml` or `setup.cfg` if they're present in the project root.
+* `pytest_runner.pytest_options`: default ` `. Pytest options e.g. `-sv`, `-x`, that are used during the invocation. 
 
 These options can be set in each `settings.json` within `.vscode` in the project root directory or in the `settings.json` of `VSCode` (**not recommended**).
 
@@ -133,6 +134,9 @@ The second run should work properly.
 ---
 
 ## Release Notes 📋
+
+### 0.0.7
+- Add support for pytest options in the `settings.json`
 
 ### 0.0.6
 
