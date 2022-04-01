@@ -155,6 +155,7 @@ async function runSingleTest(pytestCfgKey: string) {
         );
         return;
     }
+    const pytestOptions = conf.get(`pytest_runner.pytest_options`) || "";
     const pytestConf = getPytestCfg(projectFolder);
 
     const selection = getTestAuthorityName(
@@ -177,7 +178,7 @@ async function runSingleTest(pytestCfgKey: string) {
             return;
         }
     }
-    let command = `${pytestExec} -v ${filepath} -k ${selection}`;
+    let command = `${pytestExec} ${pytestOptions} ${filepath} -k ${selection}`;
     runCommand(command);
 }
 
