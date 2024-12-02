@@ -84,7 +84,7 @@ export function getRelativePath(rootpath: string, wsFolder: string) {
     return rootpath.replace(wsFolder, '').substring(1);
 }
 
-export function getTestAuthorityName(
+export async function getTestAuthorityName(
     checkConfig: boolean,
     pytestCfg: string[][],
     sel: vscode.Selection,
@@ -105,30 +105,54 @@ export function getTestAuthorityName(
     }
     const lineNumber = sel.active.line;
     const line: string | undefined = document.lineAt(lineNumber).text || undefined;
-    if (!line) {
-        return;
-    }
-    // second authority is the function name
-    const functionMatch: RegExpMatchArray | null = line.match(/def(.*?)\(/);
-    if (functionMatch !== null) {
-        const function_ = functionMatch[1].trim();
-        if (checkConfig === true) {
-            return functionsNames.some((w) => function_.startsWith(w))
-                ? function_
-                : undefined;
-        } else {
-            return function_;
+    if (line) {
+        // second authority is the function name
+        const functionMatch: RegExpMatchArray | null = line.match(/def(.*?)\(/);
+        if (functionMatch !== null) {
+            const function_ = functionMatch[1].trim();
+            if (checkConfig === true) {
+                return functionsNames.some((w) => function_.startsWith(w))
+                    ? function_
+                    : undefined;
+            } else {
+                return function_;
+            }
+        }
+
+        // third authority is the class name
+        const classMatch: RegExpMatchArray | null = line.match(/class(.*?)[\(|\:]/);
+        if (classMatch !== null) {
+            const class_ = classMatch[1].trim();
+            if (checkConfig === true) {
+                return classesNames.some((w) => class_.startsWith(w))
+                    ? class_
+                    : undefined;
+            } else {
+                return class_;
+            }
         }
     }
-    // third authority is the class name
-    const classMatch: RegExpMatchArray | null = line.match(/class(.*?)[\(|\:]/);
-    if (classMatch !== null) {
-        const class_ = classMatch[1].trim();
-        if (checkConfig === true) {
-            return classesNames.some((w) => class_.startsWith(w)) ? class_ : undefined;
-        } else {
-            return class_;
+    // fourth authority is the symbol where the cursor is positioned in the file tree
+    const docSymbols = (await vscode.commands.executeCommand(
+        'vscode.executeDocumentSymbolProvider',
+        document.uri
+    )) as vscode.DocumentSymbol[];
+    const findSymbolAtPosition = (
+        symbols: vscode.DocumentSymbol[],
+        position: vscode.Position
+    ): vscode.DocumentSymbol | undefined => {
+        for (const symbol of symbols) {
+            if (symbol.range.contains(position)) {
+                // Check if this symbol has children
+                const childSymbol = findSymbolAtPosition(symbol.children, position);
+                return childSymbol || symbol; // Return the deepest matching symbol
+            }
         }
+        return undefined;
+    };
+    const currentSymbol = findSymbolAtPosition(docSymbols, sel.active);
+    if (currentSymbol) {
+        return currentSymbol.name;
     }
     return;
 }
@@ -155,10 +179,10 @@ async function runSingleTest(pytestCfgKey: string) {
         );
         return;
     }
-    const pytestOptions = conf.get(`pytest_runner.pytest_options`) || "";
+    const pytestOptions = conf.get(`pytest_runner.pytest_options`) || '';
     const pytestConf = getPytestCfg(projectFolder);
 
-    const selection = getTestAuthorityName(
+    const selection = await getTestAuthorityName(
         checkConfig,
         pytestConf,
         editor.selection,
