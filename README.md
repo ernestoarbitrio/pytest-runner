@@ -2,7 +2,7 @@
 
 ![logo](https://raw.githubusercontent.com/ernestoarbitrio/pytest-runner/main/images/pytest-runner-logo-small.png)
 
-![ci](https://github.com/ernestoarbitrio/pytest-runner/workflows/CI/badge.svg?branch=main) ![vs](https://vsmarketplacebadge.apphb.com/version-short/pamaron.pytest-runner.svg) ![vs-d](https://vsmarketplacebadge.apphb.com/installs/pamaron.pytest-runner.svg) ![dow](https://vsmarketplacebadge.apphb.com/downloads/pamaron.pytest-runner.svg) ![rating](https://vsmarketplacebadge.apphb.com/rating-star/pamaron.pytest-runner.svg)
+![ci](https://github.com/ernestoarbitrio/pytest-runner/workflows/CI/badge.svg) ![vs](https://vsmarketplacebadge.apphb.com/version-short/pamaron.pytest-runner.svg) ![vs-d](https://vsmarketplacebadge.apphb.com/installs/pamaron.pytest-runner.svg) ![dow](https://vsmarketplacebadge.apphb.com/downloads/pamaron.pytest-runner.svg) ![rating](https://vsmarketplacebadge.apphb.com/rating-star/pamaron.pytest-runner.svg)
 
 The Pytest Runner Visual Studio Code extension makes running Python tests effortless using [`pytest`](https://docs.pytest.org). Whether you're using a `local environment` or a `Docker container`, this tool has you covered. It’s designed for developers who need a quick, streamlined way to execute tests directly from their codebase.
 
