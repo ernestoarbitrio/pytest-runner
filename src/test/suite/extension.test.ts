@@ -2,10 +2,13 @@ import * as assert from 'assert';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import * as Ext from '../../extension';
+import * as sinon from 'sinon';
 
 const fixturesLocation = '/../../../src/test/fixtures/';
 
 suite('Extension Test Suite', () => {
+    const executeCommandStub = sinon.stub(vscode.commands, 'executeCommand');
+
     vscode.window.showInformationMessage('Start all tests.');
 
     test('run command', async () => {
@@ -91,16 +94,15 @@ suite('Extension Test Suite', () => {
         {
             checkCfg: true,
             cfg: [['test_'], ['Describe']],
-            line: 7,
+            line: 8,
             expected: 'DescribeExample',
         },
         {
             checkCfg: false,
             cfg: [['test_'], ['Test']],
-            line: 7,
+            line: 8,
             expected: 'DescribeExample',
         },
-        { checkCfg: true, cfg: [['test_'], ['Test']], line: 7, expected: undefined },
     ].forEach((data) => {
         test('authority name is the class name on the active line', async () => {
             const uri = vscode.Uri.file(
@@ -109,7 +111,7 @@ suite('Extension Test Suite', () => {
             const document = await vscode.workspace.openTextDocument(uri);
             const selection = new vscode.Selection(data.line, 0, data.line, 0);
 
-            const authName = Ext.getTestAuthorityName(
+            const authName = await Ext.getTestAuthorityName(
                 data.checkCfg,
                 data.cfg,
                 selection,
@@ -125,13 +127,13 @@ suite('Extension Test Suite', () => {
         {
             checkCfg: true,
             cfg: [['test_', 'it_'], ['Describe']],
-            line: 8,
+            line: 9,
             expected: 'it_has_some',
         },
         {
             checkCfg: false,
             cfg: [['test_'], ['Describe']],
-            line: 8,
+            line: 9,
             expected: 'it_has_some',
         },
         {
@@ -140,8 +142,6 @@ suite('Extension Test Suite', () => {
             line: 4,
             expected: 'but_me',
         },
-        { checkCfg: true, cfg: [['test_'], ['Test']], line: 7, expected: undefined },
-        { checkCfg: true, cfg: [['test_'], ['Test']], line: 2, expected: undefined },
         { checkCfg: true, cfg: [['it_'], ['Test']], line: 1, expected: undefined },
     ].forEach((data) => {
         test('authority name is the function name on the active line', async () => {
@@ -151,7 +151,7 @@ suite('Extension Test Suite', () => {
             const document = await vscode.workspace.openTextDocument(uri);
             const selection = new vscode.Selection(data.line, 0, data.line, 0);
 
-            const authName = Ext.getTestAuthorityName(
+            const authName = await Ext.getTestAuthorityName(
                 data.checkCfg,
                 data.cfg,
                 selection,
@@ -206,7 +206,65 @@ suite('Extension Test Suite', () => {
                 data.selection.activeChar
             );
 
-            const authName = Ext.getTestAuthorityName(
+            const authName = await Ext.getTestAuthorityName(
+                data.checkCfg,
+                data.cfg,
+                selection,
+                document
+            );
+
+            assert.strictEqual(authName, data.expected);
+        });
+    });
+
+    [
+        {
+            checkCfg: true,
+            mockSymbols: [
+                {
+                    name: 'test_me',
+                    kind: vscode.SymbolKind.Function,
+                    range: new vscode.Range(
+                        new vscode.Position(2, 0),
+                        new vscode.Position(3, 0)
+                    ),
+                    children: [],
+                },
+            ],
+            cfg: [['test_'], ['Test']],
+            line: 2,
+            expected: 'test_me',
+        },
+        {
+            checkCfg: true,
+            mockSymbols: [
+                {
+                    name: 'TestMe',
+                    kind: vscode.SymbolKind.Class,
+                    range: new vscode.Range(
+                        new vscode.Position(14, 0),
+                        new vscode.Position(15, 0)
+                    ),
+                    children: [],
+                },
+            ],
+            cfg: [['test_'], ['Class']],
+            line: 14,
+            expected: 'TestMe',
+        },
+    ].forEach((data) => {
+        test('returns symbol name when found in the file tree', async () => {
+            // Mock `executeCommand` to return the test's mockSymbols
+            executeCommandStub
+                .withArgs('vscode.executeDocumentSymbolProvider', sinon.match.any)
+                .resolves(data.mockSymbols);
+            const uri = vscode.Uri.file(
+                path.join(__dirname + fixturesLocation + 'test_example.py')
+            );
+            const document = await vscode.workspace.openTextDocument(uri);
+            const selection = new vscode.Selection(data.line, 0, data.line, 0);
+
+            const authName = await Ext.getTestAuthorityName(
                 data.checkCfg,
                 data.cfg,
                 selection,

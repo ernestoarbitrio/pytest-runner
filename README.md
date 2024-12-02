@@ -1,30 +1,31 @@
+# PyTest Runner for VsCode
+
 ![logo](https://raw.githubusercontent.com/ernestoarbitrio/pytest-runner/main/images/pytest-runner-logo-small.png)
 
 ![ci](https://github.com/ernestoarbitrio/pytest-runner/workflows/CI/badge.svg?branch=main) ![vs](https://vsmarketplacebadge.apphb.com/version-short/pamaron.pytest-runner.svg) ![vs-d](https://vsmarketplacebadge.apphb.com/installs/pamaron.pytest-runner.svg) ![dow](https://vsmarketplacebadge.apphb.com/downloads/pamaron.pytest-runner.svg) ![rating](https://vsmarketplacebadge.apphb.com/rating-star/pamaron.pytest-runner.svg)
 
-This `vscode` extension allows you to run test (*in a very quick way*) in your 🐍 `python` codebase using [`pytest`](https://docs.pytest.org).
-It can be configured to run test using a `local` and a `docker` 🐳  based interpreter (see Extension Settings).
+The Pytest Runner Visual Studio Code extension makes running Python tests effortless using [`pytest`](https://docs.pytest.org). Whether you're using a `local environment` or a `Docker container`, this tool has you covered. It’s designed for developers who need a quick, streamlined way to execute tests directly from their codebase.
 
-> NOTE: this is an early stage project 🐣. Please open an issue or, even better, a PR if you find it interesting and you
-wanna improve `pytest-runner`.
+> NOTE: Pytest Runner is in its early stages 🐣. Contributions are welcome! Found an issue? Open one. Want to enhance it? Submit a PR 😃.
 
-## Motivation
-In my current job the test ecosystem lives in a complex architecture of docker containers. The 95% of tests need to be
-ran through the remote python interpreter within the docker container. Moreover the articulated tree of the source code
-required every time a long node_ids e.g. `test_mod.py::test_func` notation. 
-Given that I decided to start my own extension in order to run the test using any pytest exectutable, local or docker based,
-directly from the document your working on. I was inspired by https://vimawesome.com/plugin/pytest-vim and then I decided
-to write this plugin to facilitate and speed up the test invocation on any python codebase I work on 😊.
+## Why Pytest Runner? 🌟
+
+Modern testing environments can be complex. For instance, in my job, most tests run in a Docker-based architecture, requiring remote interpreters and long pytest identifiers like `test_mod.py::test_func`. This process was tedious and slow, so I created Pytest Runner to eliminate friction and make testing as intuitive as possible.
+
+Inspired by tools like <https://vimawesome.com/plugin/pytest-vim>, this extension brings speed and ease to testing Python codebases, no matter the setup.
 
 Look at the usage section for more details.
 
-## Features 😎
+## Features 🔥
 
 - Run single tests or test modules using `local or venv` pytest command
 - Run single tests or test modules using pytest through a `docker container`
-- Optional inspection of pytest configurantion in `setup.cfg` or `pyproject.toml`
+- Optional configuration inspection via `setup.cfg` or `pyproject.toml` files.
 
-If `pytest_runner.check_config` is `true`, before the test execution, `pytest-runner` checks the configuration file of your project, for example for a `toml` file like this:
+### Configuration file check
+
+If `pytest_runner.check_config` is enabled, before the test execution, `pytest-runner` checks the configuration file of your project, for example for a `toml` file like this:
+
 ```toml
 [tool.pytest.ini_options]
 python_classes = ["Test", "Describe"]
@@ -34,7 +35,8 @@ testpaths = ["tests",]
 ```
 
 or a `setup.cfg`:
-```
+
+```cfg
 [tool:pytest]
 python_classes = Test Describe
 python_files = test_*.py
@@ -48,28 +50,30 @@ error ❌ message.
 
 ![error](https://raw.githubusercontent.com/ernestoarbitrio/pytest-runner/main/images/err.png)
 
-## Requirements 🕹
+## Requirements 📦
 
-The only requirement is `pytest`. NOTE: this extension, so far, has been tested with `MacOsx` and `Linux`.
+- **Pytest** is the only requirement.
+- Currently tested on **macOS** and **Linux**.
 
 ## Extension Settings ⚙️
 
-This extension contributes the following settings:
+This extension offers several customizable settings:
 
-* `pytest_runner.pytest_exec`: the local `pytest` command exectuable. If not set it fallbacks to your active virtual environment set within the `vscode` python extesions or, if not set, to `pytest` in `usr/bin`
-* `pytest_runner.pytest_exec_docker`: the docker command to run `pytest` in your container (e.g. `docker-compose run --rm testrun-container pytest`)
-* `pytest_runner.check_config`: default `false`. Check pytest conf section within `pyproject.toml` or `setup.cfg` if they're present in the project root.
-* `pytest_runner.pytest_options`: default ` `. Pytest options e.g. `-sv`, `-x`, that are used during the invocation. 
+- `pytest_runner.pytest_exec`: Specifies the local `pytest` executable. Defaults to your active virtual environment or `/usr/bin/pytest`.
+- `pytest_runner.pytest_exec_docker`: Command to run pytest in a Docker container (e.g., `docker-compose run --rm test-container pytest`).
+- `pytest_runner.check_config`: Enables/disables configuration checks (default: false).
+- `pytest_runner.pytest_options`: Additional pytest options (e.g., -sv, -x).
 
 These options can be set in each `settings.json` within `.vscode` in the project root directory or in the `settings.json` of `VSCode` (**not recommended**).
 
-## Usage 📚
+## Usage 📖
 
-There are 4 commands available:
-- `Run Test`
-- `Run Test Docker`
-- `Run Test Module`
-- `Run Test Module Docker`
+Available Commands:
+
+- `Run Test`: Run a single test locally.
+- `Run Test Docker`: Run a single test in Docker.
+- `Run Test Module`: Run all tests in the current file locally.
+- `Run Test Module Docker`: Run all tests in the current file via Docker.
 
 You can run them using the `VSCode` command palette (`⇧⌘P` or `ctr⇧P`)
 
@@ -79,8 +83,11 @@ or through the 2 custom buttons on the status bar.
 
 ![cmd-palette](https://raw.githubusercontent.com/ernestoarbitrio/pytest-runner/main/images/custom-buttons.png)
 
+### Running Tests
+
 To **run a single test** you have 2 options:
- 1. Position your cursor on the line where the test `function` or a `class` is defined and run the desired command.
+
+ 1. Simply place your cursor anywhere inside the target test function or class. The extension automatically detects the context and executes the corresponding test without requiring precise cursor placement on the definition line.
  2. Select the test name or portion of it and run the desired command.
 
  > According to the command the test will be executed in the local environment `Run Test` or in the docker container `Run Test Docker`
@@ -89,9 +96,11 @@ To **run a single test** you have 2 options:
 
 If you wanna run all the tests in your current python module you can just use `Run Test Module` or `Run Test Module Docker` independently of the cursor location.
 
->💡 This way of usage (through the command palette) could be not really productive. I would suggest to create a keyboard shortuct for every command you are going to use.
+>💡 **Pro Tip**: Create keyboard shortcuts for frequently used commands to boost productivity.
 
- ### Keybindings and shortcuts ⌨️
+### Keybindings and shortcuts ⌨️
+
+Define custom shortcuts for faster testing:
 
 The 4 commands in the section above are actually an alias for these:
 
@@ -100,10 +109,11 @@ The 4 commands in the section above are actually an alias for these:
 - `pytest-runner.run-module-test`
 - `pytest-runner.run-module-test-docker`
 
-To increase the speed I would suggest new entries in the keybindigs in order to map the 2 commands to a keyboard
- key combination:
+To increase the speed I would suggest new entries in the keybindigs in order to map the 2 commands to a keyboard key combination:
+
   1. Open `keybinding.json` -> command palette (`⇧⌘P` or `ctr⇧P`) `Open Keyboard Shortcut`
   2. Add your key combination:
+
   ```json
       {
         "key": "ctrl+alt+1",
@@ -115,9 +125,8 @@ To increase the speed I would suggest new entries in the keybindigs in order to 
         "command": "pytest-runner.run-module-test"
       }
   ```
-Now, as well as the command palette, the tests can be exectued using your custom shortcut. In the example above
-a single test will run with the `ctrl+alt+1` key combination and the whole module can be tested using the `ctrl+alt+2`.
 
+Now you can execute single tests with Ctrl+Alt+1 and module tests with Ctrl+Alt+2 (or your chosen keys).
 
 ## Known Issues 🧐
 
@@ -129,14 +138,19 @@ The second run should work properly.
 
 ### Do you like pytest-runner?
 
-<a href="https://www.buymeacoffee.com/ernestoarb5" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+[![Buy Me A Coffee](https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png)](https://www.buymeacoffee.com/ernestoarb5)
 
 ---
 
 ## Release Notes 📋
 
+### 0.0.8
+
+- Improved test detection: the extension now automatically identifies the test function or class context based on the cursor's position anywhere within the function or class body.
+
 ### 0.0.7
-- Add support for pytest options in the `settings.json`
+
+- Add support for pytest options in the `settings.json`.
 
 ### 0.0.6
 
@@ -162,4 +176,3 @@ The second run should work properly.
 ### 0.0.1
 
 - First `pytest-runner` release.
-
