@@ -1,6 +1,6 @@
 # PyTest Runner for VsCode
 
-![logo](https://raw.githubusercontent.com/ernestoarbitrio/pytest-runner/main/images/pytest-runner-logo-small.png)
+![logo](https://github.com/user-attachments/assets/38c10cef-c8b8-4c61-9712-3eb6bc77aa89)
 
 ![ci](https://github.com/ernestoarbitrio/pytest-runner/workflows/CI/badge.svg)
 
