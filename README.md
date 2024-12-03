@@ -144,6 +144,10 @@ The second run should work properly.
 
 ## Release Notes 📋
 
+### 0.0.9
+
+- Error message improvement.
+
 ### 0.0.8
 
 - Improved test detection: the extension now automatically identifies the test function or class context based on the cursor's position anywhere within the function or class body.

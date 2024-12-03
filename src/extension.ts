@@ -173,10 +173,7 @@ async function runSingleTest(pytestCfgKey: string) {
         conf.get(`pytest_runner.${pytestCfgKey}`) ||
         (await Utility.getDefaultPytestCmd(editor.document));
     if (!pytestExec) {
-        vscode.window.showErrorMessage(
-            'pytest command not found! Check your virtualenv in the VSCode python ' +
-                'extension or add a custom pytest command in the extension settings.'
-        );
+        vscode.window.showErrorMessage(Constants.pytestExeError);
         return;
     }
     const pytestOptions = conf.get(`pytest_runner.pytest_options`) || '';
@@ -221,10 +218,7 @@ async function runModuleTest(pytestCfgKey: string) {
         conf.get(`pytest_runner.${pytestCfgKey}`) ||
         (await Utility.getDefaultPytestCmd(editor.document));
     if (!pytestExec) {
-        vscode.window.showErrorMessage(
-            'pytest command not found! Check your virtualenv in the VSCode python ' +
-                'extension or add a custom pytest command in the extension settings.'
-        );
+        vscode.window.showErrorMessage(Constants.pytestExeError);
         return;
     }
     let command = `${pytestExec} ${filepath}`;
