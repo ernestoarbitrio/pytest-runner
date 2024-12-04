@@ -80,7 +80,7 @@
     "eslint": "^8.14.0",
     "glob": "^8.0.1",
     "mocha": "^11.0.1",
-    "prettier": "3.4.1",
+    "prettier": "3.4.2",
     "sinon": "^19.0.2",
     "typescript": "^5.7.2"
   },
