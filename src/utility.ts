@@ -28,6 +28,7 @@ export class Utility {
                 );
             }
         } catch (error) {
+            console.error('Error determining Python path:', error);
             return Constants.python;
         }
     }
