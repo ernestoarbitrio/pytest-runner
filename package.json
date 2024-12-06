@@ -2,7 +2,7 @@
   "name": "pytest-runner",
   "displayName": "Pytest Runner for Visual Studio Code",
   "description": "Run test (locally ,venv and in docker container) in your 🐍 python codebase using pytest.",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "publisher": "pamaron",
   "keywords": [
     "python",
