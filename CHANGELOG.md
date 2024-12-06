@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.10
+
+- Show status bar icons (💻 and/or 🐳) only if the file is a test file.
+
 ## 0.0.9
 
 - Error message improvement.
