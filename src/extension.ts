@@ -294,7 +294,11 @@ function updateStatusBarItems(): void {
     if (!dockerConf) {
         runDockerTestItem.hide();
     }
-    if (!currentFile || currentFile.slice(-2) !== 'py') {
+    if (
+        !currentFile ||
+        currentFile.slice(-2) !== 'py' ||
+        !currentFile.includes('/tests/')
+    ) {
         runTestItem.hide();
         runDockerTestItem.hide();
     } else {
