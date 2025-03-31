@@ -81,7 +81,7 @@
     "glob": "^11.0.1",
     "mocha": "^11.1.0",
     "prettier": "3.5.3",
-    "sinon": "^19.0.2",
+    "sinon": "^20.0.0",
     "typescript": "^5.7.3"
   },
   "dependencies": {
