@@ -88,84 +88,6 @@ suite('Extension Test Suite', () => {
         {
             checkCfg: true,
             cfg: [['test_'], ['Test']],
-            line: 0,
-            expected: 'TestExample',
-        },
-        {
-            checkCfg: true,
-            cfg: [['test_'], ['Describe']],
-            line: 8,
-            expected: 'DescribeExample',
-        },
-        {
-            checkCfg: false,
-            cfg: [['test_'], ['Test']],
-            line: 8,
-            expected: 'DescribeExample',
-        },
-    ].forEach((data) => {
-        test('authority name is the class name on the active line', async () => {
-            const uri = vscode.Uri.file(
-                path.join(__dirname + fixturesLocation + 'test_example.py')
-            );
-            const document = await vscode.workspace.openTextDocument(uri);
-            const selection = new vscode.Selection(data.line, 0, data.line, 0);
-
-            const authName = await Ext.getTestAuthorityName(
-                data.checkCfg,
-                data.cfg,
-                selection,
-                document
-            );
-
-            assert.strictEqual(authName, data.expected);
-        });
-    });
-
-    [
-        { checkCfg: true, cfg: [['test_'], ['Test']], line: 1, expected: 'test_me' },
-        {
-            checkCfg: true,
-            cfg: [['test_', 'it_'], ['Describe']],
-            line: 9,
-            expected: 'it_has_some',
-        },
-        {
-            checkCfg: false,
-            cfg: [['test_'], ['Describe']],
-            line: 9,
-            expected: 'it_has_some',
-        },
-        {
-            checkCfg: true,
-            cfg: [['test_', 'but_'], ['Describe']],
-            line: 4,
-            expected: 'but_me',
-        },
-        { checkCfg: true, cfg: [['it_'], ['Test']], line: 1, expected: undefined },
-    ].forEach((data) => {
-        test('authority name is the function name on the active line', async () => {
-            const uri = vscode.Uri.file(
-                path.join(__dirname + fixturesLocation + 'test_example.py')
-            );
-            const document = await vscode.workspace.openTextDocument(uri);
-            const selection = new vscode.Selection(data.line, 0, data.line, 0);
-
-            const authName = await Ext.getTestAuthorityName(
-                data.checkCfg,
-                data.cfg,
-                selection,
-                document
-            );
-
-            assert.strictEqual(authName, data.expected);
-        });
-    });
-
-    [
-        {
-            checkCfg: true,
-            cfg: [['test_'], ['Test']],
             selection: { line: 1, anchorChar: 8, activeChar: 15 },
             expected: 'test_me',
         },
@@ -233,7 +155,7 @@ suite('Extension Test Suite', () => {
             ],
             cfg: [['test_'], ['Test']],
             line: 2,
-            expected: 'test_me',
+            expected: ['test_me'],
         },
         {
             checkCfg: true,
@@ -250,7 +172,24 @@ suite('Extension Test Suite', () => {
             ],
             cfg: [['test_'], ['Class']],
             line: 14,
-            expected: 'TestMe',
+            expected: ['TestMe'],
+        },
+        {
+            checkCfg: true,
+            mockSymbols: [
+                {
+                    name: 'test_top_level',
+                    kind: vscode.SymbolKind.Class,
+                    range: new vscode.Range(
+                        new vscode.Position(18, 0),
+                        new vscode.Position(19, 0)
+                    ),
+                    children: [],
+                },
+            ],
+            cfg: [['test_'], ['Class']],
+            line: 19,
+            expected: ['test_top_level'],
         },
     ].forEach((data) => {
         test('returns symbol name when found in the file tree', async () => {
@@ -271,7 +210,7 @@ suite('Extension Test Suite', () => {
                 document
             );
 
-            assert.strictEqual(authName, data.expected);
+            assert.deepStrictEqual(authName, data.expected);
         });
     });
 });

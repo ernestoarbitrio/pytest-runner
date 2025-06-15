@@ -15,3 +15,6 @@ class TestMe:
 
     def test_foo(self):
         assert True
+
+def test_top_level():
+    assert True

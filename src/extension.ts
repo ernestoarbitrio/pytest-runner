@@ -103,36 +103,6 @@ export async function getTestAuthorityName(
             return selection;
         }
     }
-    const lineNumber = sel.active.line;
-    const line: string | undefined = document.lineAt(lineNumber).text || undefined;
-    if (line) {
-        // second authority is the function name
-        const functionMatch: RegExpMatchArray | null = line.match(/def(.*?)\(/);
-        if (functionMatch !== null) {
-            const function_ = functionMatch[1].trim();
-            if (checkConfig === true) {
-                return functionsNames.some((w) => function_.startsWith(w))
-                    ? function_
-                    : undefined;
-            } else {
-                return function_;
-            }
-        }
-
-        // third authority is the class name
-        const classMatch: RegExpMatchArray | null = line.match(/class(.*?)[\(|\:]/);
-        if (classMatch !== null) {
-            const class_ = classMatch[1].trim();
-            if (checkConfig === true) {
-                return classesNames.some((w) => class_.startsWith(w))
-                    ? class_
-                    : undefined;
-            } else {
-                return class_;
-            }
-        }
-    }
-    // fourth authority is the symbol where the cursor is positioned in the file tree
     const docSymbols = (await vscode.commands.executeCommand(
         'vscode.executeDocumentSymbolProvider',
         document.uri
@@ -140,21 +110,23 @@ export async function getTestAuthorityName(
     const findSymbolAtPosition = (
         symbols: vscode.DocumentSymbol[],
         position: vscode.Position
-    ): vscode.DocumentSymbol | undefined => {
+    ): vscode.DocumentSymbol[] => {
         for (const symbol of symbols) {
             if (symbol.range.contains(position)) {
-                // Check if this symbol has children
-                const childSymbol = findSymbolAtPosition(symbol.children, position);
-                return childSymbol || symbol; // Return the deepest matching symbol
+                const childPath = findSymbolAtPosition(symbol.children, position);
+                return [symbol, ...childPath];
             }
         }
-        return undefined;
+        return [];
     };
     const currentSymbol = findSymbolAtPosition(docSymbols, sel.active);
-    if (currentSymbol) {
-        return currentSymbol.name;
+    if (currentSymbol.length > 1) {
+        return [currentSymbol[0].name, currentSymbol[1].name];
+    } else if (currentSymbol.length === 1) {
+        return [currentSymbol[0].name];
+    } else {
+        return undefined;
     }
-    return;
 }
 
 async function runSingleTest(pytestCfgKey: string) {
@@ -199,7 +171,15 @@ async function runSingleTest(pytestCfgKey: string) {
             return;
         }
     }
-    let command = `${pytestExec} ${pytestOptions} ${filepath} -k ${selection}`;
+    let command: string;
+    if (Array.isArray(selection)) {
+        // Join all selection items with '::' after the filepath
+        const selectionPath = selection.join('::');
+        command = `${pytestExec} ${pytestOptions} ${filepath}::${selectionPath}`;
+    } else {
+        // selection is a string: use -k option
+        command = `${pytestExec} ${pytestOptions} ${filepath} -k ${selection}`;
+    }
     runCommand(command);
 }
 
