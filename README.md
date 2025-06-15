@@ -144,6 +144,10 @@ The second run should work properly.
 
 ## Release Notes 📋
 
+### 0.0.11
+
+- Change test invocation using the :: notation e.g. `test_mod.py::test_func` to the more modern `-k` option, e.g. `pytest -k test_func`. *Note: the `-k` option is used only when there's a text selection, otherwise the extension will continue to use the `::` notation for test invocation.*
+
 ### 0.0.10
 
 - Show status bar icons (💻 and/or 🐳) only if the file is a test file.
