@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.12
+
+- Bug fix when no setup.cfg is present or no pytest options set in pyptoject.toml
+
 ## 0.0.11
 
 - Change test invocation using the :: notation e.g. `test_mod.py::test_func` to the more modern `-k` option, e.g. `pytest -k test_func`. *Note: the `-k` option is used only when there's a text selection, otherwise the extension will continue to use the `::` notation for test invocation.*
