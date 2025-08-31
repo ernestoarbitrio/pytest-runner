@@ -36,10 +36,7 @@ suite('Extension Test Suite', () => {
 
         const config = Ext.getPytestCfg(path_);
 
-        assert.deepStrictEqual(config, [
-            ['test_', 'it_', 'they_', 'but_', 'and_it_'],
-            ['Test', 'Describe'],
-        ]);
+        assert.deepStrictEqual(config, [['test_'], ['Test']]);
     });
 
     test('get pytest config from pyproject toml file', () => {

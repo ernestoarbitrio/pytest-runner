@@ -58,7 +58,7 @@ export function getPytestCfg(projectDir: string) {
     if (fs.existsSync(pyprojectToml)) {
         const config = toml.parse(fs.readFileSync(pyprojectToml, 'utf-8'));
         if (!config.tool || !config.tool.pytest) {
-            return _setupCfgConf(setupCfg);
+            return [Constants.testFunctions, Constants.testClasses];
         }
         const pyFunctions: Array<string> =
             config.tool.pytest.ini_options.python_functions || Constants.testFunctions;
