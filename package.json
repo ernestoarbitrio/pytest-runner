@@ -82,7 +82,7 @@
     "mocha": "^11.7.4",
     "prettier": "3.6.2",
     "sinon": "^21.0.0",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "toml": "^3.0.0"
