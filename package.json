@@ -2,7 +2,7 @@
   "name": "pytest-runner",
   "displayName": "Pytest Runner for Visual Studio Code",
   "description": "Run test (locally ,venv and in docker container) in your 🐍 python codebase using pytest.",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "publisher": "pamaron",
   "keywords": [
     "python",
@@ -15,7 +15,7 @@
     "name": "Ernesto Arbitrio"
   },
   "engines": {
-    "vscode": "^1.103.0"
+    "vscode": "^1.105.0"
   },
   "icon": "images/pytest-runner-logo-small.png",
   "categories": [
@@ -85,7 +85,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "toml": "^3.0.0"
+    "@iarna/toml": "^2.2.5"
   },
   "prettier": {
     "trailingComma": "es5",

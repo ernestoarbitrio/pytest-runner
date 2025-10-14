@@ -144,6 +144,10 @@ The second run should work properly.
 
 ## Release Notes 📋
 
+## 0.0.13
+
+- Bug fix parsing pyproject.toml, "=", [ \t] or [A-Za-z0-9_\-] but "." found
+
 ## 0.0.12
 
 - Bug fix when no setup.cfg is present or no pytest options set in pyptoject.toml
