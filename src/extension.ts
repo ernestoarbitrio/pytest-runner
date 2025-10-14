@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import * as toml from 'toml';
+import * as TOML from '@iarna/toml';
 import * as fs from 'fs';
 import { Utility } from './utility';
 import { Constants } from './constants';
@@ -37,6 +37,12 @@ class Term {
     }
 }
 
+interface PyprojectConfig {
+    tool?: {
+        pytest?: any;
+    };
+}
+
 export function getPytestCfg(projectDir: string) {
     function _setupCfgConf(setupCfg: string) {
         const config = fs.readFileSync(setupCfg, 'utf-8');
@@ -56,14 +62,18 @@ export function getPytestCfg(projectDir: string) {
     const pyprojectToml = `${projectDir}/pyproject.toml`;
     const setupCfg = `${projectDir}/setup.cfg`;
     if (fs.existsSync(pyprojectToml)) {
-        const config = toml.parse(fs.readFileSync(pyprojectToml, 'utf-8'));
+        const config = TOML.parse(
+            fs.readFileSync(pyprojectToml, 'utf-8')
+        ) as PyprojectConfig;
+        console.log(config.tool?.pytest);
         if (!config.tool || !config.tool.pytest) {
             return [Constants.testFunctions, Constants.testClasses];
         }
         const pyFunctions: Array<string> =
-            config.tool.pytest.ini_options.python_functions || Constants.testFunctions;
+            config.tool?.pytest?.ini_options?.python_functions ||
+            Constants.testFunctions;
         const pyClasses: Array<string> =
-            config.tool.pytest.ini_options.python_classes || Constants.testClasses;
+            config.tool?.pytest?.ini_options?.python_classes || Constants.testClasses;
         return [pyFunctions, pyClasses];
     } else if (fs.existsSync(setupCfg)) {
         return _setupCfgConf(setupCfg);
